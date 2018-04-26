@@ -1,5 +1,6 @@
 // live-server public
-// babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch
+// babel src/playground/es6_counter_example.js --out-file=public/scripts/app.js --presets=env,react --watch
+
 class Counter extends React.Component {
     constructor(props){
         super(props);
@@ -50,47 +51,3 @@ class Counter extends React.Component {
 }
 
 ReactDOM.render(<Counter/>, document.getElementById('app'));
-
-
-// let count = 0;
-// const handleAddOne = () => {
-//     console.log('Add one');
-//     count++;
-//     renderCounterApp();
-// };
-// const handleMinusOne = () => {
-//     console.log('Minus one');
-//     count--;
-//     renderCounterApp();
-// };
-// const handleReset = () => {
-//     console.log('Reset');
-//     count = 0;
-//     renderCounterApp();
-// };
-// const templateTwo = (
-//     <div>
-//         <h1>Count: {count}</h1>
-//         <button onClick={handleAddOne}>+1</button>
-//         <button onClick={handleMinusOne}>-1</button>
-//         <button onClick={handleReset}>Reset</button>
-//     </div>
-// );
-//
-// const appRoot = document.getElementById('app');
-//
-// // ReactDOM.render(template, appRoot);
-// ReactDOM.render(templateTwo, appRoot);
-//
-// const renderCounterApp = () => {
-//     const templateTwo = (
-//         <div>
-//             <h1>Count: {count}</h1>
-//             <button onClick={handleAddOne}>+1</button>
-//             <button onClick={handleMinusOne}>-1</button>
-//             <button onClick={handleReset}>Reset</button>
-//         </div>
-//     );
-//
-//     ReactDOM.render(templateTwo, appRoot);
-// };
