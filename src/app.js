@@ -10,7 +10,7 @@ class IndecisionApp extends React.Component {
         this.handleAddOption = this.handleAddOption.bind(this);
 
         this.state = {
-            options: ['Take a break', 'Keep working']
+            options: props.options
         };
     }
 
@@ -44,15 +44,11 @@ class IndecisionApp extends React.Component {
     }
 
     render(){
-        const title = "Indecision";
         const subtitle = "Put your life in the hand of a computer";
 
         return (
             <div>
-                <Header
-                    title={title}
-                    subtitle={subtitle}
-                />
+                <Header subtitle={subtitle} />
                 <Action
                     hasOptions={this.state.options.length > 0}
                     handlePick={this.handlePick}
@@ -69,6 +65,25 @@ class IndecisionApp extends React.Component {
     }
 }
 
+IndecisionApp.defaultProps = {
+    options: ['Take a break', 'Keep working']
+};
+
+// Stateless functional component
+const Header = (props) => {
+    return (
+        <div>
+            <h1>{props.title}</h1>
+            {props.subtitle && <h2>{props.subtitle}</h2>}
+        </div>
+    );
+};
+
+Header.defaultProps = {
+    title: 'Indecision'
+};
+
+/*
 class Header extends React.Component {
     render() {
         return (
@@ -79,7 +94,20 @@ class Header extends React.Component {
         );
     }
 }
+*/
 
+// Stateless functional component
+const Action = (props) => {
+    return (
+        <div>
+            <button disabled={!props.hasOptions} onClick={props.handlePick}>
+                What should I do?
+            </button>
+        </div>
+    );
+};
+
+/*
 class Action extends React.Component {
     render() {
         return (
@@ -91,7 +119,25 @@ class Action extends React.Component {
         );
     }
 }
+*/
 
+// Stateless functional component
+const Options = (props) => {
+    return (
+        <div>
+            <button onClick={props.handleDeleteOptions}>Remove all</button>
+
+            {
+                props.options.map((option) => {
+                    return <Option key={option} text={option}/>;
+                })
+            }
+
+        </div>
+    );
+};
+
+/*
 class Options extends React.Component {
     render() {
         return (
@@ -108,7 +154,18 @@ class Options extends React.Component {
         );
     }
 }
+*/
 
+// Stateless functional component
+const Option = (props) => {
+    return (
+        <div>
+            <p>{props.text}</p>
+        </div>
+    );
+};
+
+/*
 class Option extends React.Component {
     render(){
         return (
@@ -118,6 +175,7 @@ class Option extends React.Component {
         )
     }
 }
+*/
 
 class AddOption extends React.Component {
     constructor(props){
