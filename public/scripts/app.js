@@ -20,6 +20,7 @@ var IndecisionApp = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (IndecisionApp.__proto__ || Object.getPrototypeOf(IndecisionApp)).call(this, props));
 
         _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
+        _this.handleDeleteOption = _this.handleDeleteOption.bind(_this);
         _this.handlePick = _this.handlePick.bind(_this);
         _this.handleAddOption = _this.handleAddOption.bind(_this);
 
@@ -30,11 +31,61 @@ var IndecisionApp = function (_React$Component) {
     }
 
     _createClass(IndecisionApp, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            // Fetching data from localStorage
+            try {
+                var json = localStorage.getItem('options');
+                var options = JSON.parse(json);
+
+                if (options) {
+                    this.setState(function () {
+                        return { options: options };
+                    });
+                }
+            } catch (e) {
+                // Do nothing
+            }
+        }
+    }, {
+        key: 'componentDidUpdate',
+        value: function componentDidUpdate(prevProps, prevState) {
+            console.log('componentDidUpdate');
+
+            // Saving data to localStorage if necessary
+            if (prevState.options.length != this.state.options.length) {
+                var json = JSON.stringify(this.state.options);
+                localStorage.setItem('options', json);
+            }
+        }
+    }, {
+        key: 'componentWillUnmount',
+        value: function componentWillUnmount() {
+            console.log('componentWillUnmount');
+        }
+    }, {
         key: 'handleDeleteOptions',
         value: function handleDeleteOptions() {
+            // this.setState(() => {
+            //     return {
+            //         options: []
+            //     };
+            // });
+
             this.setState(function () {
+                return { options: [] };
+            });
+        }
+    }, {
+        key: 'handleDeleteOption',
+        value: function handleDeleteOption(optionToRemove) {
+            console.log('Delete ', optionToRemove);
+
+            this.setState(function (prevState) {
                 return {
-                    options: []
+                    options: prevState.options.filter(function (option) {
+                        return optionToRemove !== option;
+                    })
                 };
             });
         }
@@ -53,6 +104,12 @@ var IndecisionApp = function (_React$Component) {
             } else if (this.state.options.indexOf(option) > -1) {
                 return 'This option already exist';
             }
+
+            // this.setState((prevState) => {
+            //     return {
+            //         options: prevState.options.concat([option])
+            //     };
+            // });
 
             this.setState(function (prevState) {
                 return {
@@ -75,7 +132,8 @@ var IndecisionApp = function (_React$Component) {
                 }),
                 React.createElement(Options, {
                     options: this.state.options,
-                    handleDeleteOptions: this.handleDeleteOptions
+                    handleDeleteOptions: this.handleDeleteOptions,
+                    handleDeleteOption: this.handleDeleteOption
                 }),
                 React.createElement(AddOption, {
                     handleAddOption: this.handleAddOption
@@ -139,20 +197,6 @@ var Action = function Action(props) {
     );
 };
 
-/*
-class Action extends React.Component {
-    render() {
-        return (
-            <div>
-                <button disabled={!this.props.hasOptions} onClick={this.props.handlePick}>
-                    What should I do?
-                </button>
-            </div>
-        );
-    }
-}
-*/
-
 // Stateless functional component
 var Options = function Options(props) {
     return React.createElement(
@@ -163,55 +207,32 @@ var Options = function Options(props) {
             { onClick: props.handleDeleteOptions },
             'Remove all'
         ),
+        props.options.length === 0 && React.createElement(
+            'p',
+            null,
+            'Please add an option to get started'
+        ),
         props.options.map(function (option) {
-            return React.createElement(Option, { key: option, text: option });
+            return React.createElement(Option, { key: option, text: option, handleDeleteOption: props.handleDeleteOption });
         })
     );
 };
-
-/*
-class Options extends React.Component {
-    render() {
-        return (
-            <div>
-                <button onClick={this.props.handleDeleteOptions}>Remove all</button>
-
-                {
-                    this.props.options.map((option) => {
-                        return <Option key={option} text={option}/>;
-                    })
-                }
-
-            </div>
-        );
-    }
-}
-*/
 
 // Stateless functional component
 var Option = function Option(props) {
     return React.createElement(
         'div',
         null,
+        props.text,
         React.createElement(
-            'p',
-            null,
-            props.text
+            'button',
+            { onClick: function onClick(e) {
+                    props.handleDeleteOption(props.text);
+                } },
+            'Delete'
         )
     );
 };
-
-/*
-class Option extends React.Component {
-    render(){
-        return (
-            <div>
-                <p>{this.props.text}</p>
-            </div>
-        )
-    }
-}
-*/
 
 var AddOption = function (_React$Component2) {
     _inherits(AddOption, _React$Component2);
@@ -237,13 +258,13 @@ var AddOption = function (_React$Component2) {
             var option = event.target.elements.option.value.trim();
             var error = this.props.handleAddOption(option);
 
-            event.target.elements.option.value = '';
-
             this.setState(function () {
-                return {
-                    error: error
-                };
+                return { error: error };
             });
+
+            if (!error) {
+                event.target.elements.option.value = '';
+            }
         }
     }, {
         key: 'render',

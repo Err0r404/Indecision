@@ -2,7 +2,7 @@
 // babel src/app.js --out-file=public/scripts/app.js --presets=env,react --watch
 
 class IndecisionApp extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
@@ -15,21 +15,36 @@ class IndecisionApp extends React.Component {
         };
     }
 
-    componentDidMount(){
-        // fetching data
-        console.log('componentDidMount');
+    componentDidMount() {
+        // Fetching data from localStorage
+        try {
+            const json = localStorage.getItem('options');
+            const options = JSON.parse(json);
+
+            if (options) {
+                this.setState(() => ({options: options}));
+            }
+        }
+        catch (e) {
+            // Do nothing
+        }
     }
 
-    componentDidUpdate(){
-        // saving data
+    componentDidUpdate(prevProps, prevState) {
         console.log('componentDidUpdate');
+
+        // Saving data to localStorage if necessary
+        if (prevState.options.length != this.state.options.length) {
+            const json = JSON.stringify(this.state.options);
+            localStorage.setItem('options', json);
+        }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         console.log('componentWillUnmount');
     }
 
-    handleDeleteOptions(){
+    handleDeleteOptions() {
         // this.setState(() => {
         //     return {
         //         options: []
@@ -39,7 +54,7 @@ class IndecisionApp extends React.Component {
         this.setState(() => ({options: []}));
     }
 
-    handleDeleteOption(optionToRemove){
+    handleDeleteOption(optionToRemove) {
         console.log('Delete ', optionToRemove);
 
         this.setState((prevState) => ({
@@ -47,14 +62,14 @@ class IndecisionApp extends React.Component {
         }));
     }
 
-    handlePick(){
+    handlePick() {
         const randomNumber = Math.floor(Math.random() * this.state.options.length);
         const option = this.state.options[randomNumber];
-        alert("Choose "+option);
+        alert("Choose " + option);
     }
 
-    handleAddOption(option){
-        if(!option){
+    handleAddOption(option) {
+        if (!option) {
             return 'Enter valid value';
         }
         else if (this.state.options.indexOf(option) > -1) {
@@ -72,12 +87,12 @@ class IndecisionApp extends React.Component {
         }));
     }
 
-    render(){
+    render() {
         const subtitle = "Put your life in the hand of a computer";
 
         return (
             <div>
-                <Header subtitle={subtitle} />
+                <Header subtitle={subtitle}/>
                 <Action
                     hasOptions={this.state.options.length > 0}
                     handlePick={this.handlePick}
@@ -137,29 +152,17 @@ const Action = (props) => {
     );
 };
 
-/*
-class Action extends React.Component {
-    render() {
-        return (
-            <div>
-                <button disabled={!this.props.hasOptions} onClick={this.props.handlePick}>
-                    What should I do?
-                </button>
-            </div>
-        );
-    }
-}
-*/
-
 // Stateless functional component
 const Options = (props) => {
     return (
         <div>
             <button onClick={props.handleDeleteOptions}>Remove all</button>
 
+            {props.options.length === 0 && <p>Please add an option to get started</p>}
+
             {
                 props.options.map((option) => {
-                    return <Option key={option} text={option} handleDeleteOption={props.handleDeleteOption} />;
+                    return <Option key={option} text={option} handleDeleteOption={props.handleDeleteOption}/>;
                 })
             }
 
@@ -167,75 +170,42 @@ const Options = (props) => {
     );
 };
 
-/*
-class Options extends React.Component {
-    render() {
-        return (
-            <div>
-                <button onClick={this.props.handleDeleteOptions}>Remove all</button>
-
-                {
-                    this.props.options.map((option) => {
-                        return <Option key={option} text={option}/>;
-                    })
-                }
-
-            </div>
-        );
-    }
-}
-*/
-
 // Stateless functional component
 const Option = (props) => {
     return (
         <div>
             {props.text}
-            <button onClick={(e) => {props.handleDeleteOption(props.text)}}>
+            <button onClick={(e) => {
+                props.handleDeleteOption(props.text)
+            }}>
                 Delete
             </button>
         </div>
     );
 };
 
-/*
-class Option extends React.Component {
-    render(){
-        return (
-            <div>
-                <p>{this.props.text}</p>
-            </div>
-        )
-    }
-}
-*/
-
 class AddOption extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
 
         this.handleAddOption = this.handleAddOption.bind(this);
 
         this.state = {
-            error : undefined
+            error: undefined
         }
     }
 
-    handleAddOption(event){
+    handleAddOption(event) {
         event.preventDefault();
 
         const option = event.target.elements.option.value.trim();
         const error = this.props.handleAddOption(option);
 
-        event.target.elements.option.value = '';
-
-        // this.setState(() => {
-        //     return {
-        //         error: error
-        //     };
-        // });
-
         this.setState(() => ({error: error}));
+
+        if(!error){
+            event.target.elements.option.value = '';
+        }
     }
 
     render() {
@@ -251,4 +221,4 @@ class AddOption extends React.Component {
     }
 }
 
-ReactDOM.render(<IndecisionApp />, document.getElementById('app'));
+ReactDOM.render(<IndecisionApp/>, document.getElementById('app'));
