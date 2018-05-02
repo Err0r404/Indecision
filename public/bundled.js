@@ -65,60 +65,9 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__person__ = __webpack_require__(2);
-// import './utils';
-
-
-
-console.log('app.js is running');
-
-// utils.js
-console.log(__WEBPACK_IMPORTED_MODULE_0__utils__["b" /* square */](3));
-
-console.log(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* add */](3, 1));
-
-// person.js
-console.log('isAdult(17)', __WEBPACK_IMPORTED_MODULE_1__person__["b" /* isAdult */](17));
-console.log('isAdult(18)', __WEBPACK_IMPORTED_MODULE_1__person__["b" /* isAdult */](18));
-console.log('isAdult(19)', __WEBPACK_IMPORTED_MODULE_1__person__["b" /* isAdult */](19));
-
-console.log('canDrink(20)', __WEBPACK_IMPORTED_MODULE_1__person__["a" /* canDrink */](20));
-console.log('canDrink(21)', __WEBPACK_IMPORTED_MODULE_1__person__["a" /* canDrink */](21));
-console.log('canDrink(22)', __WEBPACK_IMPORTED_MODULE_1__person__["a" /* canDrink */](22));
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return square; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return add; });
-console.log('utils.js is loaded');
-
-const square = (x) => x * x;
-
-const add = (a, b) => a + b;
-
-// Named exports
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return isAdult; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return canDrink; });
-const isAdult = (age) => (age >= 18);
-const canDrink = (age) => (age >= 21);
-
-
-
+throw new Error("Module parse failed: E:\\wamp64\\www\\REACT\\Indecision\\src\\app.js Unexpected token (4:12)\nYou may need an appropriate loader to handle this file type.\n| import ReactDOM from 'react-dom';\r\n| \r\n| const tpl = <p>here</p>;\r\n| ReactDOM.render(tpl, document.getElementById('app'));");
 
 /***/ })
 /******/ ]);
