@@ -1,5 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const tpl = <p>here</p>;
+const tpl = <h1>JSX FROM WEBPACK</h1>;
 ReactDOM.render(tpl, document.getElementById('app'));
