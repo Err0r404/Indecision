@@ -6,18 +6,40 @@ import Options from './Options'
 import AddOption from './AddOption'
 
 class IndecisionApp extends React.Component {
-    constructor(props) {
-        super(props);
+    state = {
+        options: ['Take a break', 'Keep working']
+    };
 
-        this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
-        this.handleDeleteOption = this.handleDeleteOption.bind(this);
-        this.handlePick = this.handlePick.bind(this);
-        this.handleAddOption = this.handleAddOption.bind(this);
+    handleDeleteOptions = () => {
+        this.setState(() => ({options: []}));
+    };
 
-        this.state = {
-            options: props.options
-        };
-    }
+    handleDeleteOption = (optionToRemove) => {
+        console.log('Delete ', optionToRemove);
+
+        this.setState((prevState) => ({
+            options: prevState.options.filter((option) => optionToRemove !== option)
+        }));
+    };
+
+    handlePick = () => {
+        const randomNumber = Math.floor(Math.random() * this.state.options.length);
+        const option = this.state.options[randomNumber];
+        alert("Choose " + option);
+    };
+
+    handleAddOption = (option) => {
+        if (!option) {
+            return 'Enter valid value';
+        }
+        else if (this.state.options.indexOf(option) > -1) {
+            return 'This option already exist';
+        }
+
+        this.setState((prevState) => ({
+            options: prevState.options.concat([option])
+        }));
+    };
 
     componentDidMount() {
         // Fetching data from localStorage
@@ -46,37 +68,6 @@ class IndecisionApp extends React.Component {
         console.log('componentWillUnmount');
     }
 
-    handleDeleteOptions() {
-        this.setState(() => ({options: []}));
-    }
-
-    handleDeleteOption(optionToRemove) {
-        console.log('Delete ', optionToRemove);
-
-        this.setState((prevState) => ({
-            options: prevState.options.filter((option) => optionToRemove !== option)
-        }));
-    }
-
-    handlePick() {
-        const randomNumber = Math.floor(Math.random() * this.state.options.length);
-        const option = this.state.options[randomNumber];
-        alert("Choose " + option);
-    }
-
-    handleAddOption(option) {
-        if (!option) {
-            return 'Enter valid value';
-        }
-        else if (this.state.options.indexOf(option) > -1) {
-            return 'This option already exist';
-        }
-
-        this.setState((prevState) => ({
-            options: prevState.options.concat([option])
-        }));
-    }
-
     render() {
         const subtitle = "Put your life in the hand of a computer";
 
@@ -100,8 +91,10 @@ class IndecisionApp extends React.Component {
     }
 }
 
+/*
 IndecisionApp.defaultProps = {
     options: ['Take a break', 'Keep working']
 };
+*/
 
 export default IndecisionApp;
