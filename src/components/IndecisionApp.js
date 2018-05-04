@@ -1,13 +1,15 @@
 import React from "react";
 
-import Header from './Header'
-import Action from './Action'
-import Options from './Options'
-import AddOption from './AddOption'
+import Header from './Header';
+import Action from './Action';
+import Options from './Options';
+import AddOption from './AddOption';
+import OptionModal from './OptionModal';
 
 class IndecisionApp extends React.Component {
     state = {
-        options: ['Take a break', 'Keep working']
+        options: ['Take a break', 'Keep working'],
+        selectedOption: undefined
     };
 
     handleDeleteOptions = () => {
@@ -25,7 +27,9 @@ class IndecisionApp extends React.Component {
     handlePick = () => {
         const randomNumber = Math.floor(Math.random() * this.state.options.length);
         const option = this.state.options[randomNumber];
-        alert("Choose " + option);
+
+        this.setState(() => ({selectedOption: option}));
+        // alert("Choose " + option);
     };
 
     handleAddOption = (option) => {
@@ -39,6 +43,10 @@ class IndecisionApp extends React.Component {
         this.setState((prevState) => ({
             options: prevState.options.concat([option])
         }));
+    };
+
+    handleClearSelectedOption = () => {
+        this.setState(() => ({selectedOption: undefined}));
     };
 
     componentDidMount() {
@@ -86,15 +94,13 @@ class IndecisionApp extends React.Component {
                 <AddOption
                     handleAddOption={this.handleAddOption}
                 />
+                <OptionModal
+                    selectedOption={this.state.selectedOption}
+                    handleClearSelectedOption={this.handleClearSelectedOption}
+                />
             </div>
         );
     }
 }
-
-/*
-IndecisionApp.defaultProps = {
-    options: ['Take a break', 'Keep working']
-};
-*/
 
 export default IndecisionApp;
