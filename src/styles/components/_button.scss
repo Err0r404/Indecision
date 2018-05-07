@@ -16,12 +16,19 @@ button:disabled {
   font-weight: bold;
   font-size: $l-size;
   width: 100%;
-  margin-bottom: $xl-size;
+  margin-bottom: $m-size;
   padding: 2.4rem;
 }
 
 .big-btn:disabled {
   opacity: 0.5;
+}
+
+// Large devices
+@media (min-width: $desktop-breakpoint) {
+  .big-btn {
+    margin-bottom: $xl-size;
+  }
 }
 
 // Regular button
